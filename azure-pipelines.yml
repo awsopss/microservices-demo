@@ -15,22 +15,6 @@ variables:
   services: "adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
 
 stages:
-  - stage: Build
-    displayName: Build
-    jobs:
-      - job: Build
-        displayName: Build
-        steps:
-          - script: |
-              for service in $(services); do
-                echo "Building and pushing Docker image for $service"
-                docker build -t cloudops96/public:$service -f src/$service/Dockerfile .
-                docker push cloudops96/public:$service
-              done
-            displayName: 'Build and Push Docker Images'
-            env:
-              DOCKER_BUILDKIT: 1
-
   - stage: Terraform
     displayName: 'Terraform Deployment'
     jobs:
@@ -60,3 +44,24 @@ stages:
                 echo "Applying Terraform..."
                 terraform apply --auto-approve
             displayName: 'Terraform Apply'
+
+  - stage: BuildAndPush
+    displayName: Build and Push Docker Images
+    dependsOn: Terraform
+    jobs:
+      - job: Build
+        displayName: Build
+        steps:
+          - script: |
+              # Login to ACR
+              az acr login --name chandancloudops96
+
+              # Build and push Docker images
+              for service in $(services); do
+                echo "Building and pushing Docker image for $service"
+                docker build -t chandancloudops96.azurecr.io/$service -f src/$service/Dockerfile .
+                docker push chandancloudops96.azurecr.io/$service
+              done
+            displayName: 'Build and Push Docker Images'
+            env:
+              DOCKER_BUILDKIT: 1
