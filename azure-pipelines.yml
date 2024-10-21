@@ -152,6 +152,7 @@ stages:
                 cd /home/ubuntu/myagent/_work/3/s/Private_AKS
                 terraform init
             displayName: 'Terraform Init'
+              
 
       - job: Plan
         displayName: 'Terraform Plan Job'
