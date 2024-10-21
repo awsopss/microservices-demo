@@ -64,4 +64,4 @@ stages:
               done
             displayName: 'Build and Push Docker Images'
             env:
-              DOCKER_BUILDKIT: 1
+              DOCKER_BUILDKIT: 0
