@@ -9,134 +9,28 @@ pr:
       - main
 
 pool:
-  name: 'Chandan' # Managed node pool name
+  name: 'Chandan'  # Managed node pool name
 
-# stages:
-# - stage: Build
-#   displayName: Build 
-#   jobs:
-#   - job: Build
-#     displayName: Build
-#     steps:
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/adservice/Dockerfile'
-#     #     tags: 'adservice'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/cartservice/src/Dockerfile'
-#     #     tags: 'cartservice'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/checkoutservice/Dockerfile'
-#     #     tags: 'checkoutservice'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/currencyservice/Dockerfile'
-#     #     tags: 'currencyservice'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/emailservice/Dockerfile'
-#     #     tags: 'emailservice'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/frontend/Dockerfile'
-#     #     tags: 'frontend'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/loadgenerator/Dockerfile'
-#     #     tags: 'loadgenerator'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-
-#     # - task: Docker@2
-#     #   inputs:
-#     #     containerRegistry: 'dockerhub-connection'
-#     #     repository: 'cloudops96/public'
-#     #     command: 'buildAndPush'
-#     #     Dockerfile: '**/src/paymentservice/Dockerfile'
-#     #     tags: 'paymentservice'
-#     #     addPipelineData: false
-#     #     addBaseImageData: false
-
-#     - task: Docker@2
-#       inputs:
-#         containerRegistry: 'dockerhub-connection'
-#         repository: 'cloudops96/public'
-#         command: 'buildAndPush'
-#         Dockerfile: '**/src/productcatalogservice/Dockerfile'
-#         tags: 'productcatalogservice'
-#         addPipelineData: false
-#         addBaseImageData: false
-
-#     - task: Docker@2
-#       inputs:
-#         containerRegistry: 'dockerhub-connection'
-#         repository: 'cloudops96/public'
-#         command: 'buildAndPush'
-#         Dockerfile: '**/src/recommendationservice/Dockerfile'
-#         tags: 'recommendationservice'
-#         addPipelineData: false
-#         addBaseImageData: false
-
-#     - task: Docker@2
-#       inputs:
-#         containerRegistry: 'dockerhub-connection'
-#         repository: 'cloudops96/public'
-#         command: 'buildAndPush'
-#         Dockerfile: '**/src/shippingservice/Dockerfile'
-#         tags: 'shippingservice'
-#         addPipelineData: false
-#         addBaseImageData: false
-
-#     - task: Docker@2
-#       inputs:
-#         containerRegistry: 'dockerhub-connection'
-#         repository: 'cloudops96/public'
-#         command: 'buildAndPush'
-#         Dockerfile: '**/src/shoppingassistantservice/Dockerfile'
-#         tags: 'shoppingassistantservice'
-#         addPipelineData: false
-#         addBaseImageData: false
+variables:
+  services: "adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
 
 stages:
+  - stage: Build
+    displayName: Build
+    jobs:
+      - job: Build
+        displayName: Build
+        steps:
+          - script: |
+              for service in $(services); do
+                echo "Building and pushing Docker image for $service"
+                docker build -t cloudops96/public:$service -f src/$service/Dockerfile .
+                docker push cloudops96/public:$service
+              done
+            displayName: 'Build and Push Docker Images'
+            env:
+              DOCKER_BUILDKIT: 1
+
   - stage: Terraform
     displayName: 'Terraform Deployment'
     jobs:
@@ -146,19 +40,23 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
-                echo "Current Directory:"
-                pwd
-                echo "Initializing Terraform..."
                 cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                echo "Initializing Terraform..."
                 terraform init
-               
             displayName: 'Terraform Init'
+          
           - task: CmdLine@2
             inputs:
               script: |
-                echo "Current Directory:"
-                pwd
-                echo "Planning Terraform..."
                 cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                echo "Planning Terraform..."
                 terraform plan -out=tfplan
             displayName: 'Terraform Plan'
+
+          - task: CmdLine@2
+            inputs:
+              script: |
+                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                echo "Applying Terraform..."
+                terraform apply --auto-approve
+            displayName: 'Terraform Apply'
