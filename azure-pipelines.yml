@@ -20,11 +20,11 @@ stages:
         steps:
           - task: Docker@2
             inputs:
-              containerRegistry: 'Azure_Container_Registory_connection'  # Replace with your service connection name
-              repository: 'chandancloudops96/cartservice'  # Specify the full repository path
+              containerRegistry: 'Azure_Container_Registory_connection'
+              repository: 'cartservice'
               command: 'buildAndPush'
-              Dockerfile: 'src/cartservice/src/Dockerfile'  # Correct Dockerfile path
-              tags: 'latest'  # Use 'latest' or other specific tags as needed
+              Dockerfile: 'src/cartservice/src/Dockerfile'
+              tags: 'latest'
               addPipelineData: false
               addBaseImageData: false
 
