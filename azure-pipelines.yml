@@ -11,13 +11,13 @@ pr:
 pool:
   name: 'Chandan' # Managed node pool name
 
-stages:
-- stage: Build
-  displayName: Build 
-  jobs:
-  - job: Build
-    displayName: Build
-    steps:
+# stages:
+# - stage: Build
+#   displayName: Build 
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     steps:
 #     # - task: Docker@2
 #     #   inputs:
 #     #     containerRegistry: 'dockerhub-connection'
@@ -136,11 +136,33 @@ stages:
 #         addPipelineData: false
 #         addBaseImageData: false
 
-    - task: CmdLine@2
-      inputs:
-        script: |
-          pwd
-          
-          cd /home/ubuntu/myagent/_work/3/s/Private_AKS
-          
-          terraform init
+stages:
+  - stage: Terraform
+    displayName: 'Terraform Deployment'
+    jobs:
+      - job: Init
+        displayName: 'Terraform Init Job'
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                echo "Current Directory:"
+                pwd
+                echo "Initializing Terraform..."
+                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                terraform init
+            displayName: 'Terraform Init'
+
+      - job: Plan
+        displayName: 'Terraform Plan Job'
+        dependsOn: Init  # Ensures this job runs after the Init job
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                echo "Current Directory:"
+                pwd
+                echo "Planning Terraform..."
+                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                terraform plan -out=tfplan
+            displayName: 'Terraform Plan'
