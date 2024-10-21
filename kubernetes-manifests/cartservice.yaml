@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,7 +44,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: cartservice
+        image: chandancloudops96.azurecr.io/cartservice:latest  # Update to ACR image
         ports:
         - containerPort: 7070
         env:
@@ -65,6 +66,8 @@ spec:
           periodSeconds: 10
           grpc:
             port: 7070
+      imagePullSecrets:
+      - name: acr-auth  # Reference the secret for pulling from ACR
 ---
 apiVersion: v1
 kind: Service
