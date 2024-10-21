@@ -11,39 +11,20 @@ pr:
 pool:
   name: 'Chandan'  # Managed node pool name
 
-variables:
-  services: "adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingassistantservice"
-
 stages:
   - stage: BuildAndPush
     displayName: Build and Push Docker Images
     jobs:
       - job: Build
-        displayName: Build
+        displayName: Build Docker Images
         steps:
-          - script: |
-              # Login to ACR
-              az acr login --name chandancloudops96
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Replace with your service connection name
+              repository: 'chandancloudops96/cartservice'  # Specify the full repository path
+              command: 'buildAndPush'
+              Dockerfile: 'src/cartservice/src/Dockerfile'  # Correct Dockerfile path
+              tags: 'latest'  # Use 'latest' or other specific tags as needed
+              addPipelineData: false
+              addBaseImageData: false
 
-              # Echo the services variable for debugging
-              echo "Services to build: $services"
-
-              # Build and push Docker images
-              for service in $services; do
-                echo "Building and pushing Docker image for $service"
-                
-                # Adjust the Dockerfile path for cartservice
-                if [ "$service" == "cartservice" ]; then
-                  docker build -t chandancloudops96.azurecr.io/$service -f src/cartservice/src/Dockerfile src/cartservice
-                else
-                  docker build -t chandancloudops96.azurecr.io/$service -f src/$service/Dockerfile src/$service
-                fi
-                
-                # Check if the build was successful before pushing
-                if [ $? -eq 0 ]; then
-                  docker push chandancloudops96.azurecr.io/$service
-                else
-                  echo "Failed to build $service, skipping push."
-                fi
-              done
-            displayName: 'Build and Push Docker Images'
