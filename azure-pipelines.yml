@@ -12,7 +12,7 @@ pool:
   name: 'Chandan'  # Managed node pool name
 
 variables:
-  services: "adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
+  services: "adservice cartservice/src checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
 
 stages:
   - stage: Terraform
@@ -29,13 +29,13 @@ stages:
                 terraform init
             displayName: 'Terraform Init'
           
-          - task: CmdLine@2
-            inputs:
-              script: |
-                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
-                echo "Planning Terraform..."
-                terraform plan -out=tfplan
-            displayName: 'Terraform Plan'
+          # - task: CmdLine@2
+          #   inputs:
+          #     script: |
+          #       cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+          #       echo "Planning Terraform..."
+          #       terraform plan -out=tfplan
+          #   displayName: 'Terraform Plan'
 
           # - task: CmdLine@2
           #   inputs:
