@@ -141,6 +141,6 @@ stages:
         script: |
           pwd
           
-          cd /home/ubuntu/myagent/_work/3/s
+          cd /home/ubuntu/myagent/_work/3/s/Private_AKS
           
           terraform init
