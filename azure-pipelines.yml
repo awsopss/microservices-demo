@@ -42,5 +42,5 @@ stages:
               script: |
                 cd /home/ubuntu/myagent/_work/3/s/Private_AKS
                 echo "Applying Terraform..."
-                # terraform destroy --auto-approve
+                terraform destroy --auto-approve
             displayName: 'Terraform Apply'
