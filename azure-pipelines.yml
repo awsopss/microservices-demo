@@ -46,3 +46,92 @@ stages:
         tags: 'checkoutservice'
         addPipelineData: false
         addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/currencyservice/Dockerfile'
+        tags: 'currencyservice'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/emailservice/Dockerfile'
+        tags: 'emailservice'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/frontend/Dockerfile'
+        tags: 'frontend'
+        addPipelineData: false
+        addBaseImageData: false
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/loadgenerator/Dockerfile'
+        tags: 'loadgenerator'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/paymentservice/Dockerfile'
+        tags: 'paymentservice'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/productcatalogservice/Dockerfile'
+        tags: 'productcatalogservice'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/recommendationservice/Dockerfile'
+        tags: 'recommendationservice'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/shippingservice/Dockerfile'
+        tags: 'shippingservice'
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/shoppingassistantservice/Dockerfile'
+        tags: 'shoppingassistantservice'
+        addPipelineData: false
+        addBaseImageData: false
