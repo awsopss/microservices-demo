@@ -153,12 +153,6 @@ stages:
                 terraform init
                
             displayName: 'Terraform Init'
-              
-
-      - job: Plan
-        displayName: 'Terraform Plan Job'
-        dependsOn: Init  # Ensures this job runs after the Init job
-        steps:
           - task: CmdLine@2
             inputs:
               script: |
