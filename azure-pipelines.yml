@@ -18,13 +18,134 @@ stages:
       - job: Build
         displayName: Build Docker Images
         steps:
+          # Build and push Ad Service
           - task: Docker@2
             inputs:
-              containerRegistry: 'Azure_Container_Registory_connection'
-              repository: 'cartservice'
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'adservice'  # Repository name for Ad Service
               command: 'buildAndPush'
-              Dockerfile: 'src/cartservice/src/Dockerfile'
+              Dockerfile: 'src/adservice/Dockerfile'  # Path to Dockerfile for Ad Service
               tags: 'latest'
               addPipelineData: false
               addBaseImageData: false
 
+          # Build and push Cart Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'cartservice'  # Repository name for Cart Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/cartservice/src/Dockerfile'  # Path to Dockerfile for Cart Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Checkout Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'checkoutservice'  # Repository name for Checkout Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/checkoutservice/Dockerfile'  # Path to Dockerfile for Checkout Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Currency Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'currencyservice'  # Repository name for Currency Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/currencyservice/Dockerfile'  # Path to Dockerfile for Currency Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Email Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'emailservice'  # Repository name for Email Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/emailservice/Dockerfile'  # Path to Dockerfile for Email Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Frontend Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'frontend'  # Repository name for Frontend Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/frontend/Dockerfile'  # Path to Dockerfile for Frontend Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Load Generator Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'loadgenerator'  # Repository name for Load Generator Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/loadgenerator/Dockerfile'  # Path to Dockerfile for Load Generator Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Payment Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'paymentservice'  # Repository name for Payment Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/paymentservice/Dockerfile'  # Path to Dockerfile for Payment Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Product Catalog Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'productcatalogservice'  # Repository name for Product Catalog Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/productcatalogservice/Dockerfile'  # Path to Dockerfile for Product Catalog Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Recommendation Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'recommendationservice'  # Repository name for Recommendation Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/recommendationservice/Dockerfile'  # Path to Dockerfile for Recommendation Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Shipping Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'shippingservice'  # Repository name for Shipping Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/shippingservice/Dockerfile'  # Path to Dockerfile for Shipping Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
+
+          # Build and push Shopping Assistant Service
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
+              repository: 'shoppingassistantservice'  # Repository name for Shopping Assistant Service
+              command: 'buildAndPush'
+              Dockerfile: 'src/shoppingassistantservice/Dockerfile'  # Path to Dockerfile for Shopping Assistant Service
+              tags: 'latest'
+              addPipelineData: false
+              addBaseImageData: false
