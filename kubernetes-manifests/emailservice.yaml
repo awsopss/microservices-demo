@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,7 +44,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: emailservice
+        image: chandancloudops96.azurecr.io/emailservice:latest  # ACR image path
         ports:
         - containerPort: 8080
         env:
@@ -66,6 +67,8 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      imagePullSecrets:
+      - name: acr-auth  # Reference to the ACR secret
 ---
 apiVersion: v1
 kind: Service
