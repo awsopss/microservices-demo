@@ -12,7 +12,7 @@ pool:
   name: 'Chandan'  # Managed node pool name
 
 variables:
-  services: "adservice "
+  services: "adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
 
 stages:
   - stage: BuildAndPush
@@ -28,7 +28,11 @@ stages:
               # Build and push Docker images
               for service in $(services); do
                 echo "Building and pushing Docker image for $service"
-                docker build -t chandancloudops96.azurecr.io/$service -f src/$service/Dockerfile .
+                if [ "$service" = "cartservice" ]; then
+                  docker build -t chandancloudops96.azurecr.io/$service -f cartservice/src/Dockerfile .
+                else
+                  docker build -t chandancloudops96.azurecr.io/$service -f src/$service/Dockerfile .
+                fi
                 docker push chandancloudops96.azurecr.io/$service
               done
             displayName: 'Build and Push Docker Images'
