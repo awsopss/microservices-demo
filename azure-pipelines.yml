@@ -24,6 +24,6 @@ stages:
         repository: 'cloudops96/public/adservice'
         command: 'buildAndPush'
         Dockerfile: '**/src/adservice/Dockerfile'
-        tags: 'latest'
+        tags: 'adservice'
         addPipelineData: false
         addBaseImageData: false
