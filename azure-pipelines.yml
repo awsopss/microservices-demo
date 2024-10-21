@@ -37,13 +37,13 @@ stages:
                 terraform plan -out=tfplan
             displayName: 'Terraform Plan'
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
-                echo "Applying Terraform..."
-                terraform apply --auto-approve
-            displayName: 'Terraform Apply'
+          # - task: CmdLine@2
+          #   inputs:
+          #     script: |
+          #       cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+          #       echo "Applying Terraform..."
+          #       # terraform apply --auto-approve
+          #   displayName: 'Terraform Apply'
 
   - stage: BuildAndPush
     displayName: Build and Push Docker Images
