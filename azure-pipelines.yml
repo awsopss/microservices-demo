@@ -25,15 +25,25 @@ stages:
               # Login to ACR
               az acr login --name chandancloudops96
 
+              # Echo the services variable for debugging
+              echo "Services to build: $services"
+
               # Build and push Docker images
               for service in $services; do
                 echo "Building and pushing Docker image for $service"
+                
                 # Adjust the Dockerfile path for cartservice
                 if [ "$service" == "cartservice" ]; then
                   docker build -t chandancloudops96.azurecr.io/$service -f src/cartservice/src/Dockerfile src/cartservice
                 else
                   docker build -t chandancloudops96.azurecr.io/$service -f src/$service/Dockerfile src/$service
                 fi
-                docker push chandancloudops96.azurecr.io/$service
+                
+                # Check if the build was successful before pushing
+                if [ $? -eq 0 ]; then
+                  docker push chandancloudops96.azurecr.io/$service
+                else
+                  echo "Failed to build $service, skipping push."
+                fi
               done
             displayName: 'Build and Push Docker Images'
