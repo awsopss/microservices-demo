@@ -27,3 +27,22 @@ stages:
         tags: 'adservice'
         addPipelineData: false
         addBaseImageData: false
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/cartservice/src/Dockerfile'
+        tags: 'cartservice'
+        addPipelineData: false
+        addBaseImageData: false
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'cloudops96/public'
+        command: 'buildAndPush'
+        Dockerfile: '**/src/checkoutservice/Dockerfile'
+        tags: 'checkoutservice'
+        addPipelineData: false
+        addBaseImageData: false
