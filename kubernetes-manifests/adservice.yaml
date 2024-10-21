@@ -43,7 +43,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: adservice
+        image: chandancloudops96.azurecr.io/adservice:latest  # Image from ACR
         ports:
         - containerPort: 9555
         env:
@@ -66,6 +66,8 @@ spec:
           periodSeconds: 15
           grpc:
             port: 9555
+      imagePullSecrets:
+      - name: acr-auth  # Secret for ACR access
 ---
 apiVersion: v1
 kind: Service
