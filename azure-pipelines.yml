@@ -1,0 +1,29 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  name: 'Chandan' # Managed node pool name
+
+stages:
+- stage: Build
+  displayName: Build 
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-connection'
+        repository: 'public'
+        command: 'build'
+        Dockerfile: '**/src/adservice/Dockerfile'
+        tags: 'latest'
+        addPipelineData: false
+        addBaseImageData: false
