@@ -151,19 +151,20 @@ stages:
                 echo "Initializing Terraform..."
                 cd /home/ubuntu/myagent/_work/3/s/Private_AKS
                 terraform init
+                terraform plan 
             displayName: 'Terraform Init'
               
 
-      - job: Plan
-        displayName: 'Terraform Plan Job'
-        dependsOn: Init  # Ensures this job runs after the Init job
-        steps:
-          - task: CmdLine@2
-            inputs:
-              script: |
-                echo "Current Directory:"
-                pwd
-                echo "Planning Terraform..."
-                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
-                terraform plan -out=tfplan
-            displayName: 'Terraform Plan'
+      # - job: Plan
+      #   displayName: 'Terraform Plan Job'
+      #   dependsOn: Init  # Ensures this job runs after the Init job
+      #   steps:
+      #     - task: CmdLine@2
+      #       inputs:
+      #         script: |
+      #           echo "Current Directory:"
+      #           pwd
+      #           echo "Planning Terraform..."
+      #           cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+      #           terraform plan -out=tfplan
+      #       displayName: 'Terraform Plan'
