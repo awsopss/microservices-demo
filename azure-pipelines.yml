@@ -21,7 +21,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'dockerhub-connection'
-        repository: 'public'
+        repository: 'cloudops96/public/adservice'
         command: 'buildAndPush'
         Dockerfile: '**/src/adservice/Dockerfile'
         tags: 'latest'
