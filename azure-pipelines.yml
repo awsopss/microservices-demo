@@ -12,23 +12,35 @@ pool:
   name: 'Chandan'  # Managed node pool name
 
 variables:
-  services: 'adservice cartservice/src checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice'
+  services: "adservice cartservice/src checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
 
 stages:
-  - stage: BuildAndPush
-    displayName: Build and Push Docker Images
+  - stage: Terraform
+    displayName: 'Terraform Deployment'
     jobs:
-      - job: Build
-        displayName: Build Docker Images
+      - job: Init
+        displayName: 'Terraform Init Job'
         steps:
-          # Loop through each service to build and push Docker images
-          - ${{ each service in split(variables.services, ' ') }}:
-              - task: Docker@2
-                inputs:
-                  containerRegistry: 'Azure_Container_Registory_connection'  # Your service connection name
-                  repository: '${{ service }}'  # Repository name for the service
-                  command: 'buildAndPush'
-                  Dockerfile: 'src/${{ service }}/Dockerfile'  # Path to Dockerfile for the service
-                  tags: 'latest'
-                  addPipelineData: false
-                  addBaseImageData: false
+          - task: CmdLine@2
+            inputs:
+              script: |
+                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                echo "Initializing Terraform..."
+                terraform init
+            displayName: 'Terraform Init'
+          
+          - task: CmdLine@2
+            inputs:
+              script: |
+                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                echo "Planning Terraform..."
+                terraform plan -out=tfplan
+            displayName: 'Terraform Plan'
+
+          - task: CmdLine@2
+            inputs:
+              script: |
+                cd /home/ubuntu/myagent/_work/3/s/Private_AKS
+                echo "Applying Terraform..."
+                # terraform destroy --auto-approve
+            displayName: 'Terraform Apply'
