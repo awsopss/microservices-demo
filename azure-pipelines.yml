@@ -12,7 +12,7 @@ pool:
   name: 'Chandan'  # Managed node pool name
 
 variables:
-  services: "adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice shoppingassistantservice"
+  services: "adservice cartservice "
 
 stages:
   - stage: BuildAndPush
